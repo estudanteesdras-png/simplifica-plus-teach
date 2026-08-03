@@ -8,17 +8,31 @@ export const SERIES = [
   "7º ano — Fundamental II",
   "8º ano — Fundamental II",
   "9º ano — Fundamental II",
+  "1º ano — Ensino Médio",
+  "2º ano — Ensino Médio",
+  "3º ano — Ensino Médio",
 ];
 
 export const DISCIPLINAS = [
   "Língua Portuguesa",
   "Matemática",
   "Ciências",
+  "Biologia",
+  "Química",
+  "Física",
   "História",
   "Geografia",
+  "Filosofia",
+  "Sociologia",
   "Arte",
   "Educação Física",
+  "Inglês",
+  "Espanhol",
+  "Ensino Religioso",
+  "Informática / Tecnologia",
+  "Projeto de Vida",
 ];
+
 
 export const ADAPTACOES = [
   "Sem adaptação",
