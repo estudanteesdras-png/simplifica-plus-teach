@@ -114,6 +114,8 @@ const STORAGE_KEY = "simplifica-tech-state-v1";
 
 const initialState: State = {
   user: null,
+  perfis: {},
+
   planos: [],
   atividades: [],
   materiais: [],
