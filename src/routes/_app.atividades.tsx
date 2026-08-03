@@ -19,6 +19,7 @@ import { aplicarQuestoes } from "@/lib/aplicar-ia";
 import { gerarQuestoes } from "@/lib/questoes.functions";
 import { gerarMaterialCompleto, type MaterialCompleto } from "@/lib/material";
 import { useApp } from "@/lib/store";
+import { imprimirMaterial } from "@/lib/impressao";
 
 export const Route = createFileRoute("/_app/atividades")({
   head: () => ({
@@ -190,7 +191,12 @@ function Atividades() {
                       adaptacao,
                       formato: "atividade",
                     });
-                    window.print();
+                    imprimirMaterial({
+                      titulo: atividade.tema || atividade.titulo,
+                      disciplina: atividade.disciplina,
+                      serie: atividade.serie,
+                      tipo: "atividade",
+                    });
                   }}
                 >
                   <Printer size={16} /> Baixar PDF / imprimir

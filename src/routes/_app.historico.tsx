@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { MaterialCompleto } from "@/lib/material";
 import { useApp } from "@/lib/store";
+import { imprimirMaterial } from "@/lib/impressao";
 
 export const Route = createFileRoute("/_app/historico")({
   head: () => ({
@@ -48,7 +49,12 @@ function Historico() {
       serie: m.serie,
       formato: m.origem === "atividade" ? "atividade" : m.origem === "sequencia" ? "sequencia" : "plano",
     });
-    setTimeout(() => window.print(), 200);
+    imprimirMaterial({
+      titulo: m.tema || m.titulo,
+      disciplina: m.disciplina,
+      serie: m.serie,
+      tipo: m.origem === "atividade" ? "atividade" : m.origem === "sequencia" ? "sequencia" : "plano",
+    });
   }
 
   const Cartao = ({ m }: { m: MaterialCompleto }) => (

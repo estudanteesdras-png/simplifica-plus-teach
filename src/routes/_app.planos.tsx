@@ -19,6 +19,7 @@ import { aplicarBlueprint } from "@/lib/aplicar-ia";
 import { gerarBlueprint } from "@/lib/blueprint.functions";
 import { gerarMaterialCompleto, type MaterialCompleto } from "@/lib/material";
 import { useApp } from "@/lib/store";
+import { imprimirMaterial } from "@/lib/impressao";
 
 export const Route = createFileRoute("/_app/planos")({
   head: () => ({
@@ -184,7 +185,12 @@ function Planos() {
                       serie: plano.serie,
                       formato: "plano",
                     });
-                    window.print();
+                    imprimirMaterial({
+                      titulo: plano.tema || plano.titulo,
+                      disciplina: plano.disciplina,
+                      serie: plano.serie,
+                      tipo: "plano",
+                    });
                   }}
                 >
                   <Printer size={16} /> Baixar PDF / imprimir
