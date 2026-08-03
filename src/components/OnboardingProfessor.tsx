@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Mascote } from "@/components/Mascote";
-import { Selecao } from "@/components/Selecao";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,23 +17,24 @@ export function OnboardingProfessor() {
   const [nome, setNome] = useState(user?.nome === "Professor(a)" ? "" : (user?.nome ?? ""));
   const [escola, setEscola] = useState("");
   const [tipo, setTipo] = useState<string>(TIPOS[0]);
-  const [disciplina, setDisciplina] = useState<string>(DISCIPLINAS[1] ?? "");
-  const [turma, setTurma] = useState<string>(SERIES[4] ?? "");
+  const [disciplina, setDisciplina] = useState<string>(user?.disciplina ?? "");
+  const [turma, setTurma] = useState<string>(user?.turma ?? "");
 
   function salvar(e: React.FormEvent) {
     e.preventDefault();
-    if (!nome.trim() || !escola.trim()) {
-      toast.error("Preencha seu nome e o nome da escola.");
+    if (!nome.trim() || !escola.trim() || !disciplina.trim() || !turma.trim()) {
+      toast.error("Preencha nome, escola, matéria e turma.");
       return;
     }
     updateUser({
       nome: nome.trim(),
       escola: escola.trim(),
       tipoEscola: tipo === "Privada" ? "Privada" : "Pública",
-      disciplina,
-      turma,
+      disciplina: disciplina.trim(),
+      turma: turma.trim(),
       onboardingOk: true,
     });
+
     toast.success("Cadastro concluído. Bom planejamento!");
   }
 
@@ -92,15 +93,38 @@ export function OnboardingProfessor() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label>Matéria que ensina</Label>
-            <Selecao value={disciplina} onChange={setDisciplina} options={DISCIPLINAS} />
+            <Label htmlFor="ob-disciplina">Matéria que ensina</Label>
+            <Input
+              id="ob-disciplina"
+              list="ob-disciplinas"
+              value={disciplina}
+              onChange={(e) => setDisciplina(e.target.value)}
+              placeholder="Digite ou escolha uma matéria"
+            />
+            <datalist id="ob-disciplinas">
+              {DISCIPLINAS.map((d) => (
+                <option key={d} value={d} />
+              ))}
+            </datalist>
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label>Turma / série</Label>
-          <Selecao value={turma} onChange={setTurma} options={SERIES} />
+          <Label htmlFor="ob-turma">Turma / série</Label>
+          <Input
+            id="ob-turma"
+            list="ob-series"
+            value={turma}
+            onChange={(e) => setTurma(e.target.value)}
+            placeholder="Digite ou escolha a turma (ex.: 9º ano, 2º ano EM)"
+          />
+          <datalist id="ob-series">
+            {SERIES.map((s) => (
+              <option key={s} value={s} />
+            ))}
+          </datalist>
         </div>
+
 
         <Button type="submit" className="w-full bg-brand text-primary-foreground shadow-glow">
           Concluir cadastro
