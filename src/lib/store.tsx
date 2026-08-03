@@ -89,6 +89,8 @@ export type Notificacao = {
 
 type State = {
   user: Teacher | null;
+  /** Perfis já cadastrados, guardados por e-mail para restaurar após logout. */
+  perfis: Record<string, Teacher>;
   planos: Plano[];
   atividades: Atividade[];
   materiais: MaterialCompleto[];
@@ -107,10 +109,13 @@ type State = {
   theme: "light" | "dark";
 };
 
+
 const STORAGE_KEY = "simplifica-tech-state-v1";
 
 const initialState: State = {
   user: null,
+  perfis: {},
+
   planos: [],
   atividades: [],
   materiais: [],
@@ -193,18 +198,33 @@ export function AppProvider({ children }: { children: ReactNode }) {
       hydrated,
       isAdmin: state.user?.email?.trim().toLowerCase() === ADMIN_EMAIL,
       login: (email, nome) =>
+        patch((s) => {
+          const chave = email.trim().toLowerCase();
+          const salvo = s.perfis[chave];
+          const user: Teacher = salvo
+            ? { ...salvo, email, nome: salvo.nome || nome?.trim() || "Professor(a)" }
+            : {
+                nome: nome?.trim() || "Professor(a)",
+                email,
+                escola: "Escola Municipal João Bento de Paiva",
+                disciplina: "Língua Portuguesa",
+                preferencias: "Aulas práticas, materiais visuais e atividades adaptadas.",
+              };
+          return { ...s, user, perfis: { ...s.perfis, [chave]: user } };
+        }),
+      logout: () =>
         patch((s) => ({
           ...s,
-          user: s.user ?? {
-            nome: nome?.trim() || "Professor(a)",
-            email,
-            escola: "Escola Municipal João Bento de Paiva",
-            disciplina: "Língua Portuguesa",
-            preferencias: "Aulas práticas, materiais visuais e atividades adaptadas.",
-          },
+          user: null,
+          perfis: s.user ? { ...s.perfis, [s.user.email.trim().toLowerCase()]: s.user } : s.perfis,
         })),
-      logout: () => patch((s) => ({ ...s, user: null })),
-      updateUser: (p) => patch((s) => (s.user ? { ...s, user: { ...s.user, ...p } } : s)),
+      updateUser: (p) =>
+        patch((s) => {
+          if (!s.user) return s;
+          const user = { ...s.user, ...p };
+          return { ...s, user, perfis: { ...s.perfis, [user.email.trim().toLowerCase()]: user } };
+        }),
+
       addPlano: (p) => patch((s) => ({ ...s, planos: [p, ...s.planos] })),
       addAtividade: (a) => patch((s) => ({ ...s, atividades: [a, ...s.atividades] })),
       addMaterial: (m) => patch((s) => ({ ...s, materiais: [m, ...s.materiais] })),

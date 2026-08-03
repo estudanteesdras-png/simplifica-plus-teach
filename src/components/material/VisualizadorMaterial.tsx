@@ -18,6 +18,7 @@ import { DocumentoAtividade, DocumentoPlano } from "./DocumentoMaterial";
 import type { MaterialCompleto } from "@/lib/material";
 import type { Selo } from "@/lib/catalogo";
 import { useApp } from "@/lib/store";
+import { imprimirMaterial } from "@/lib/impressao";
 
 export type FichaMaterial = {
   id: string;
@@ -78,7 +79,12 @@ export function VisualizadorMaterial({
       serie: m.serie,
       formato: tipo,
     });
-    setTimeout(() => window.print(), 300);
+    imprimirMaterial({
+      titulo: m.tema || m.titulo,
+      disciplina: m.disciplina,
+      serie: m.serie,
+      tipo,
+    });
   }
 
   return (

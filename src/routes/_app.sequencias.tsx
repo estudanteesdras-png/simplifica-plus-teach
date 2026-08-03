@@ -19,6 +19,7 @@ import { aplicarSequencia } from "@/lib/aplicar-ia";
 import { gerarSequencia } from "@/lib/sequencia.functions";
 import type { SequenciaDidatica } from "@/lib/material";
 import { useApp } from "@/lib/store";
+import { imprimirMaterial } from "@/lib/impressao";
 
 const QUANTIDADES = ["3 aulas", "4 aulas", "5 aulas"];
 
@@ -197,7 +198,12 @@ function Sequencias() {
                       serie: sequencia.serie,
                       formato: "sequencia",
                     });
-                    window.print();
+                    imprimirMaterial({
+                      titulo: sequencia.tema || sequencia.titulo,
+                      disciplina: sequencia.disciplina,
+                      serie: sequencia.serie,
+                      tipo: "sequencia",
+                    });
                   }}
                 >
                   <Printer size={16} /> Baixar PDF / imprimir sequência
