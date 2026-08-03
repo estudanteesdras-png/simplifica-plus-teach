@@ -92,15 +92,38 @@ export function OnboardingProfessor() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label>Matéria que ensina</Label>
-            <Selecao value={disciplina} onChange={setDisciplina} options={DISCIPLINAS} />
+            <Label htmlFor="ob-disciplina">Matéria que ensina</Label>
+            <Input
+              id="ob-disciplina"
+              list="ob-disciplinas"
+              value={disciplina}
+              onChange={(e) => setDisciplina(e.target.value)}
+              placeholder="Digite ou escolha uma matéria"
+            />
+            <datalist id="ob-disciplinas">
+              {DISCIPLINAS.map((d) => (
+                <option key={d} value={d} />
+              ))}
+            </datalist>
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label>Turma / série</Label>
-          <Selecao value={turma} onChange={setTurma} options={SERIES} />
+          <Label htmlFor="ob-turma">Turma / série</Label>
+          <Input
+            id="ob-turma"
+            list="ob-series"
+            value={turma}
+            onChange={(e) => setTurma(e.target.value)}
+            placeholder="Digite ou escolha a turma (ex.: 9º ano, 2º ano EM)"
+          />
+          <datalist id="ob-series">
+            {SERIES.map((s) => (
+              <option key={s} value={s} />
+            ))}
+          </datalist>
         </div>
+
 
         <Button type="submit" className="w-full bg-brand text-primary-foreground shadow-glow">
           Concluir cadastro
