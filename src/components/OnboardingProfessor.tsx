@@ -17,23 +17,24 @@ export function OnboardingProfessor() {
   const [nome, setNome] = useState(user?.nome === "Professor(a)" ? "" : (user?.nome ?? ""));
   const [escola, setEscola] = useState("");
   const [tipo, setTipo] = useState<string>(TIPOS[0]);
-  const [disciplina, setDisciplina] = useState<string>(DISCIPLINAS[1] ?? "");
-  const [turma, setTurma] = useState<string>(SERIES[4] ?? "");
+  const [disciplina, setDisciplina] = useState<string>(user?.disciplina ?? "");
+  const [turma, setTurma] = useState<string>(user?.turma ?? "");
 
   function salvar(e: React.FormEvent) {
     e.preventDefault();
-    if (!nome.trim() || !escola.trim()) {
-      toast.error("Preencha seu nome e o nome da escola.");
+    if (!nome.trim() || !escola.trim() || !disciplina.trim() || !turma.trim()) {
+      toast.error("Preencha nome, escola, matéria e turma.");
       return;
     }
     updateUser({
       nome: nome.trim(),
       escola: escola.trim(),
       tipoEscola: tipo === "Privada" ? "Privada" : "Pública",
-      disciplina,
-      turma,
+      disciplina: disciplina.trim(),
+      turma: turma.trim(),
       onboardingOk: true,
     });
+
     toast.success("Cadastro concluído. Bom planejamento!");
   }
 
