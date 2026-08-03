@@ -154,7 +154,7 @@ function AppLayout() {
           </div>
         </header>
 
-        <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:py-10">
+        <main key={pathname} className="animar-entrada mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:py-10">
           <Outlet />
         </main>
       </div>
