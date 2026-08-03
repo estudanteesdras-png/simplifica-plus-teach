@@ -89,6 +89,8 @@ export type Notificacao = {
 
 type State = {
   user: Teacher | null;
+  /** Perfis já cadastrados, guardados por e-mail para restaurar após logout. */
+  perfis: Record<string, Teacher>;
   planos: Plano[];
   atividades: Atividade[];
   materiais: MaterialCompleto[];
@@ -106,6 +108,7 @@ type State = {
   removidos: string[];
   theme: "light" | "dark";
 };
+
 
 const STORAGE_KEY = "simplifica-tech-state-v1";
 
