@@ -695,14 +695,31 @@
 @media print {
   @page {
     size: A4;
-    margin: 0;
+    margin: 20mm;
   }
 
+  html,
   body {
     background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 11pt;
+    color: #14192d;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
-  .nao-imprimir {
+  /* Esconde toda a interface do app: menus, cabeçalhos, botões e avisos */
+  .nao-imprimir,
+  header,
+  aside,
+  nav,
+  button,
+  [role="alert"],
+  [role="status"],
+  [data-sonner-toaster],
+  [data-sonner-toast],
+  [data-radix-popper-content-wrapper] {
     display: none !important;
   }
 
@@ -710,13 +727,29 @@
     display: block !important;
   }
 
+  main {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .doc-scroll {
+    overflow: visible !important;
+  }
+
   .doc-raiz {
     gap: 0;
+    display: block;
   }
 
   .doc-folha {
+    width: auto;
+    min-height: 0;
+    padding: 0;
     box-shadow: none;
     border: none;
+    font-size: 11pt;
+    line-height: 1.5;
     break-after: page;
     page-break-after: always;
   }
@@ -725,9 +758,69 @@
     break-after: auto;
     page-break-after: auto;
   }
+
+  h1,
+  h2,
+  h3,
+  .doc-titulo,
+  .doc-secao-titulo {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  table,
+  figure,
+  .doc-bloco,
+  .doc-card,
+  li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 }
 
 @keyframes carregando {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(300%); }
 }
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Entrada suave das páginas e blocos */
+@utility animar-entrada {
+  animation: aparecer 0.35s ease-out both;
+}
+
+/* Cartões com transição suave no hover */
+@utility card-interativo {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px -24px rgb(20 25 45 / 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animar-entrada,
+  .card-interativo {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
