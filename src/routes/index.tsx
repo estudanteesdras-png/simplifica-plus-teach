@@ -5,24 +5,22 @@ import heroImg from "@/assets/hero-simplifica.jpg";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 
+const HOME_TITLE = "Planos de aula e atividades adaptadas | Simplifica+";
+const HOME_DESC =
+  "Crie planos de aula, sequências didáticas e atividades adaptadas para TEA, TDAH e DI em minutos. Plataforma para professores da educação básica.";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Simplifica+ Tech — Planejamento docente com tecnologia e inclusão" },
-      {
-        name: "description",
-        content:
-          "Planeje aulas, crie atividades adaptadas e acesse uma biblioteca inclusiva. Feito para professores da educação básica.",
-      },
-      {
-        property: "og:title",
-        content: "Simplifica+ Tech — Planejamento docente com tecnologia e inclusão",
-      },
-      {
-        property: "og:description",
-        content: "Planeje aulas, crie atividades adaptadas e acesse uma biblioteca inclusiva. Feito para professores da educação básica.",
-      },
+      { title: HOME_TITLE },
+      { name: "description", content: HOME_DESC },
+      { property: "og:title", content: HOME_TITLE },
+      { property: "og:description", content: HOME_DESC },
+      { property: "og:url", content: "https://simplificatechbr.com.br/" },
+      { name: "twitter:title", content: HOME_TITLE },
+      { name: "twitter:description", content: HOME_DESC },
     ],
+    links: [{ rel: "canonical", href: "https://simplificatechbr.com.br/" }],
   }),
   component: Index,
 });
