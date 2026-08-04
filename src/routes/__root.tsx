@@ -79,14 +79,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Simplifica+ Tech — Planejamento docente com tecnologia e inclusão" },
+      { title: "Simplifica+ Tech — Planejamento docente inclusivo" },
       {
         name: "description",
         content:
           "Planeje aulas, crie atividades adaptadas e acesse uma biblioteca inclusiva. Feito para professores da educação básica.",
       },
       { name: "author", content: "Simplifica+ Tech" },
-      { property: "og:title", content: "Simplifica+ Tech — Planejamento docente com tecnologia e inclusão" },
+      { property: "og:title", content: "Simplifica+ Tech — Planejamento docente inclusivo" },
       {
         property: "og:description",
         content: "Planeje aulas, crie atividades adaptadas e acesse uma biblioteca inclusiva. Feito para professores da educação básica.",
@@ -94,7 +94,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Simplifica+ Tech — Planejamento docente com tecnologia e inclusão" },
+      { name: "twitter:title", content: "Simplifica+ Tech — Planejamento docente inclusivo" },
       { name: "twitter:description", content: "Planeje aulas, crie atividades adaptadas e acesse uma biblioteca inclusiva. Feito para professores da educação básica." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1fe587e5-cd35-483c-afc9-00b0e7a99a66/id-preview-7647a1f6--b7a207b7-3f3f-418c-be1c-698a5ddb6b3c.lovable.app-1785489075069.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1fe587e5-cd35-483c-afc9-00b0e7a99a66/id-preview-7647a1f6--b7a207b7-3f3f-418c-be1c-698a5ddb6b3c.lovable.app-1785489075069.png" },
@@ -112,6 +112,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://simplificatechbr.com.br/#organization",
+              name: "Simplifica+ Tech",
+              url: "https://simplificatechbr.com.br",
+              description:
+                "Plataforma brasileira de planejamento docente com atividades adaptadas e biblioteca inclusiva.",
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://simplificatechbr.com.br/#website",
+              name: "Simplifica+ Tech",
+              url: "https://simplificatechbr.com.br",
+              inLanguage: "pt-BR",
+              publisher: { "@id": "https://simplificatechbr.com.br/#organization" },
+            },
+          ],
+        }),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -121,7 +147,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
