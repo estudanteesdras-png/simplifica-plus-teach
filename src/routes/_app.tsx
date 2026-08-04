@@ -143,7 +143,11 @@ function AppLayout() {
             <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Alternar tema">
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
             </Button>
-            <Link to="/notificacoes" className="relative rounded-lg p-2 hover:bg-secondary">
+            <Link
+              to="/notificacoes"
+              aria-label="Notificações"
+              className="relative rounded-lg p-2 hover:bg-secondary"
+            >
               <Bell size={18} />
               {naoLidas > 0 && (
                 <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-brand-purple px-1 text-[10px] font-bold text-primary-foreground">

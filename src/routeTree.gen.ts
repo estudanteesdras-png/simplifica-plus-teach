@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as ComeceAgoraRouteImport } from './routes/comece-agora'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AppAtividadesRouteImport } from './routes/_app.atividades'
 import { Route as AppBibliotecaRouteImport } from './routes/_app.biblioteca'
 import { Route as AppFavoritosRouteImport } from './routes/_app.favoritos'
@@ -46,6 +47,11 @@ const ComeceAgoraRoute = ComeceAgoraRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppAtividadesRoute = AppAtividadesRouteImport.update({
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/comece-agora': typeof ComeceAgoraRoute
   '/login': typeof LoginRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/atividades': typeof AppAtividadesRoute
   '/biblioteca': typeof AppBibliotecaRouteWithChildren
   '/favoritos': typeof AppFavoritosRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/comece-agora': typeof ComeceAgoraRoute
   '/login': typeof LoginRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/atividades': typeof AppAtividadesRoute
   '/favoritos': typeof AppFavoritosRoute
   '/historico': typeof AppHistoricoRoute
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/comece-agora': typeof ComeceAgoraRoute
   '/login': typeof LoginRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_app/atividades': typeof AppAtividadesRoute
   '/_app/biblioteca': typeof AppBibliotecaRouteWithChildren
   '/_app/favoritos': typeof AppFavoritosRoute
@@ -192,6 +201,7 @@ export interface FileRouteTypes {
     | '/'
     | '/comece-agora'
     | '/login'
+    | '/sitemap.xml'
     | '/atividades'
     | '/biblioteca'
     | '/favoritos'
@@ -212,6 +222,7 @@ export interface FileRouteTypes {
     | '/'
     | '/comece-agora'
     | '/login'
+    | '/sitemap.xml'
     | '/atividades'
     | '/favoritos'
     | '/historico'
@@ -231,6 +242,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/comece-agora'
     | '/login'
+    | '/sitemap.xml'
     | '/_app/atividades'
     | '/_app/biblioteca'
     | '/_app/favoritos'
@@ -253,6 +265,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   ComeceAgoraRoute: typeof ComeceAgoraRoute
   LoginRoute: typeof LoginRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -283,6 +296,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/atividades': {
@@ -458,17 +478,8 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   ComeceAgoraRoute: ComeceAgoraRoute,
   LoginRoute: LoginRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

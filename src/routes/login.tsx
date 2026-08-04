@@ -23,7 +23,9 @@ export const Route = createFileRoute("/login")({
       },
       { property: "og:title", content: "Entrar — Simplifica+ Tech" },
       { property: "og:description", content: "Acesse a plataforma do professor." },
+      { property: "og:url", content: "https://simplificatechbr.com.br/login" },
     ],
+    links: [{ rel: "canonical", href: "https://simplificatechbr.com.br/login" }],
   }),
   component: LoginPage,
 });

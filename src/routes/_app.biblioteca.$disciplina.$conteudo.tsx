@@ -13,6 +13,13 @@ import {
 import { acharConteudo, acharDisciplina, colecaoDe, type Selo } from "@/lib/catalogo";
 import { useApp } from "@/lib/store";
 
+function tituloCurto(nome: string, disciplina: string) {
+  const completo = `${nome} — ${disciplina} | Simplifica+`;
+  if (completo.length <= 60) return completo;
+  const curto = `${nome} | Simplifica+`;
+  return curto.length <= 60 ? curto : `${nome.slice(0, 45).trim()}… | Simplifica+`;
+}
+
 export const Route = createFileRoute("/_app/biblioteca/$disciplina/$conteudo")({
   loader: ({ params }) => {
     const d = acharDisciplina(params.disciplina);
@@ -20,18 +27,28 @@ export const Route = createFileRoute("/_app/biblioteca/$disciplina/$conteudo")({
     if (!d || !c) throw notFound();
     return { nome: c.nome, resumo: c.resumo, disciplina: d.nome };
   },
-  head: ({ loaderData }) => ({
+  head: ({ params, loaderData }) => ({
     meta: loaderData
       ? [
-          { title: `${loaderData.nome} — ${loaderData.disciplina} | Simplifica+ Tech` },
+          { title: tituloCurto(loaderData.nome, loaderData.disciplina) },
           { name: "description", content: loaderData.resumo },
           {
             property: "og:title",
-            content: `${loaderData.nome} — ${loaderData.disciplina} | Simplifica+ Tech`,
+            content: tituloCurto(loaderData.nome, loaderData.disciplina),
           },
           { property: "og:description", content: loaderData.resumo },
+          {
+            property: "og:url",
+            content: `https://simplificatechbr.com.br/biblioteca/${params.disciplina}/${params.conteudo}`,
+          },
         ]
       : [{ title: "Conteúdo não encontrado" }, { name: "robots", content: "noindex" }],
+    links: [
+      {
+        rel: "canonical",
+        href: `https://simplificatechbr.com.br/biblioteca/${params.disciplina}/${params.conteudo}`,
+      },
+    ],
   }),
   errorComponent: () => <SemConteudo />,
   notFoundComponent: () => <SemConteudo />,
