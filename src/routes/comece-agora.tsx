@@ -18,7 +18,9 @@ export const Route = createFileRoute("/comece-agora")({
         property: "og:description",
         content: "Conheça a plataforma e crie sua conta em poucos passos.",
       },
+      { property: "og:url", content: "https://simplificatechbr.com.br/comece-agora" },
     ],
+    links: [{ rel: "canonical", href: "https://simplificatechbr.com.br/comece-agora" }],
   }),
   component: ComeceAgora,
 });
