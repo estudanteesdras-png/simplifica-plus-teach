@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as ComeceAgoraRouteImport } from './routes/comece-agora'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AppAtividadesRouteImport } from './routes/_app.atividades'
 import { Route as AppBibliotecaRouteImport } from './routes/_app.biblioteca'
@@ -47,6 +48,11 @@ const ComeceAgoraRoute = ComeceAgoraRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/comece-agora': typeof ComeceAgoraRoute
   '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/atividades': typeof AppAtividadesRoute
   '/biblioteca': typeof AppBibliotecaRouteWithChildren
@@ -157,6 +164,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/comece-agora': typeof ComeceAgoraRoute
   '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/atividades': typeof AppAtividadesRoute
   '/favoritos': typeof AppFavoritosRoute
@@ -178,6 +186,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/comece-agora': typeof ComeceAgoraRoute
   '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_app/atividades': typeof AppAtividadesRoute
   '/_app/biblioteca': typeof AppBibliotecaRouteWithChildren
@@ -201,6 +210,7 @@ export interface FileRouteTypes {
     | '/'
     | '/comece-agora'
     | '/login'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/atividades'
     | '/biblioteca'
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
     | '/'
     | '/comece-agora'
     | '/login'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/atividades'
     | '/favoritos'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/comece-agora'
     | '/login'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/_app/atividades'
     | '/_app/biblioteca'
@@ -265,6 +277,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   ComeceAgoraRoute: typeof ComeceAgoraRoute
   LoginRoute: typeof LoginRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
@@ -296,6 +309,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -478,18 +498,9 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   ComeceAgoraRoute: ComeceAgoraRoute,
   LoginRoute: LoginRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -108,8 +108,7 @@ function AppLayout() {
             size="sm"
             className="mt-2 w-full justify-start gap-2 px-2"
             onClick={() => {
-              logout();
-              navigate({ to: "/" });
+              void logout().then(() => navigate({ to: "/" }));
             }}
           >
             <LogOut size={16} /> Sair
