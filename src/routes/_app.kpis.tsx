@@ -88,21 +88,25 @@ function PainelKpis() {
   ).size;
 
   const geracoes = eventos.filter((e) => e.tipo === "geracao");
+  // Materiais gerados = itens realmente salvos no histórico do usuário no banco.
   const totalMateriais = materiais.length + planos.length + atividades.length;
+  const totalFavoritos = new Set([...favoritos, ...salvos]).size;
   const inclusivas = geracoes.filter(
     (e) => e.adaptacao && e.adaptacao !== "Sem adaptação",
   ).length;
+  // 1,5 h economizada por material salvo no histórico.
   const horas = Math.round(totalMateriais * 1.5);
   const totalDownloads = Object.values(downloads).reduce((s, n) => s + n, 0);
 
   const cards = [
-    { label: "Professores cadastrados", valor: nf.format(professores), icon: Users },
-    { label: "Escolas atendidas", valor: nf.format(escolas), icon: Building2 },
     { label: "Materiais gerados", valor: nf.format(totalMateriais), icon: Wand2 },
+    { label: "Favoritos salvos", valor: nf.format(totalFavoritos), icon: HeartHandshake },
     { label: "Horas economizadas", valor: `${nf.format(horas)}h`, icon: Timer },
-    { label: "Atividades inclusivas", valor: nf.format(inclusivas), icon: HeartHandshake },
+    { label: "Atividades inclusivas", valor: nf.format(inclusivas), icon: Users },
     { label: "Downloads realizados", valor: nf.format(totalDownloads), icon: Download },
+    { label: "Escolas representadas", valor: nf.format(escolas || (professores ? 1 : 0)), icon: Building2 },
   ];
+
 
   // Evolução mensal real das gerações registradas no app.
   const porMes = new Map<string, number>();
