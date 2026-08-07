@@ -336,7 +336,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         if (p.turma !== undefined) linha.turma = p.turma;
         if (p.onboardingOk !== undefined) linha.onboarding_ok = p.onboardingOk;
         if (Object.keys(linha).length) {
-          void supabase.from("profiles").update(linha).eq("id", id);
+          void supabase.from("profiles").update(linha as never).eq("id", id);
         }
       },
 
@@ -357,7 +357,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             origem: m.origem ?? "plano",
             disciplina: m.disciplina ?? "",
             serie: m.serie ?? "",
-            payload: m as unknown as Record<string, unknown>,
+            payload: JSON.parse(JSON.stringify(m)),
           })
           .select("id")
           .maybeSingle()
