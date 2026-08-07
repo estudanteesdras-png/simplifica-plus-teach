@@ -60,7 +60,19 @@ const CORES: Record<string, string> = {
 };
 
 function PainelKpis() {
-  const { user, perfis, materiais, planos, atividades, eventos, avaliacoes, downloads } = useApp();
+  const {
+    user,
+    perfis,
+    materiais,
+    planos,
+    atividades,
+    eventos,
+    avaliacoes,
+    downloads,
+    favoritos,
+    salvos,
+  } = useApp();
+
   const autorizado = user?.email?.trim().toLowerCase() === ADMIN_EMAIL;
 
   if (!autorizado) {
