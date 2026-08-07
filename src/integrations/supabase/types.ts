@@ -222,6 +222,8 @@ export type Database = {
           onboarding_ok: boolean
           preferencias: string
           tema: string
+          tipo_escola: string
+          turma: string
           turmas: string[]
           updated_at: string
         }
@@ -238,6 +240,8 @@ export type Database = {
           onboarding_ok?: boolean
           preferencias?: string
           tema?: string
+          tipo_escola?: string
+          turma?: string
           turmas?: string[]
           updated_at?: string
         }
@@ -254,6 +258,8 @@ export type Database = {
           onboarding_ok?: boolean
           preferencias?: string
           tema?: string
+          tipo_escola?: string
+          turma?: string
           turmas?: string[]
           updated_at?: string
         }
