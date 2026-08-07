@@ -1,6 +1,7 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
 
+import { EstadoVazio } from "@/components/EstadoVazio";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { MATERIAIS } from "@/lib/data";
@@ -49,14 +50,16 @@ function Favoritos() {
       />
 
       {lista.length === 0 ? (
-        <div className="card-surface p-10 text-center">
-          <p className="text-sm text-muted-foreground">
-            Você ainda não favoritou nenhum material.
-          </p>
-          <Button asChild className="mt-4 bg-brand text-primary-foreground">
-            <Link to="/planos">Criar um plano de aula</Link>
-          </Button>
-        </div>
+        <EstadoVazio
+          variante="inclusivo"
+          titulo="Nenhum favorito por aqui ainda"
+          descricao="Toque no coração de um material para guardá-lo na sua conta."
+          acao={
+            <Button asChild className="bg-brand text-primary-foreground">
+              <Link to="/planos">Criar um plano de aula</Link>
+            </Button>
+          }
+        />
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {lista.map((m) => (

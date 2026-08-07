@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ClipboardList, FileText, Heart, Layers, Printer, Trash2 } from "lucide-react";
 
+import { EstadoVazio } from "@/components/EstadoVazio";
 import { PageHeader } from "@/components/PageHeader";
 import { DocumentoAtividade, DocumentoPlano } from "@/components/material/DocumentoMaterial";
 import { Button } from "@/components/ui/button";
@@ -121,7 +122,11 @@ function Historico() {
 
           <TabsContent value="planos" className="mt-5 space-y-4">
             {planos.length === 0 && (
-              <p className="text-sm text-muted-foreground">Nenhum planejamento salvo ainda.</p>
+              <EstadoVazio
+                variante="educador"
+                titulo="Nenhuma aula gerada ainda"
+                descricao="Assim que você criar um plano de aula, ele fica guardado aqui na sua conta."
+              />
             )}
             {planos.map((m) => (
               <Cartao key={m.id} m={m} />
@@ -130,7 +135,11 @@ function Historico() {
 
           <TabsContent value="atividades" className="mt-5 space-y-4">
             {atividades.length === 0 && (
-              <p className="text-sm text-muted-foreground">Nenhuma atividade salva ainda.</p>
+              <EstadoVazio
+                variante="inclusivo"
+                titulo="Nenhuma atividade salva ainda"
+                descricao="Gere uma atividade adaptada e ela aparece aqui automaticamente."
+              />
             )}
             {atividades.map((m) => (
               <Cartao key={m.id} m={m} />
@@ -139,7 +148,11 @@ function Historico() {
 
           <TabsContent value="sequencias" className="mt-5 space-y-4">
             {sequencias.length === 0 && (
-              <p className="text-sm text-muted-foreground">Nenhuma sequência didática salva ainda.</p>
+              <EstadoVazio
+                variante="pesquisador"
+                titulo="Nenhuma sequência didática ainda"
+                descricao="Monte uma sequência completa e ela fica salva na sua conta."
+              />
             )}
             {sequencias.map((m) => (
               <Cartao key={m.id} m={m} />
