@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Heart, NotebookPen, Printer, Save, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
+import { BarraDownload } from "@/components/BarraDownload";
 import { Mascote } from "@/components/Mascote";
 import { PageHeader } from "@/components/PageHeader";
 import { Selecao } from "@/components/Selecao";
@@ -114,6 +115,24 @@ function Planos() {
     }
   }
 
+  function baixarPlano() {
+    if (!plano) return;
+    registrarDownload(plano.id);
+    registrarEvento({
+      tipo: "download",
+      materialId: plano.id,
+      disciplina: plano.disciplina,
+      serie: plano.serie,
+      formato: "plano",
+    });
+    imprimirMaterial({
+      titulo: plano.tema || plano.titulo,
+      disciplina: plano.disciplina,
+      serie: plano.serie,
+      tipo: "plano",
+    });
+  }
+
   const planosSalvos = materiais.filter((m) => m.origem !== "atividade").length;
   const favorito = plano ? favoritos.includes(plano.id) : false;
 
@@ -174,25 +193,7 @@ function Planos() {
 
             {plano && !gerando && (
               <div className="flex flex-col gap-2 border-t pt-4">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    registrarDownload(plano.id);
-                    registrarEvento({
-                      tipo: "download",
-                      materialId: plano.id,
-                      disciplina: plano.disciplina,
-                      serie: plano.serie,
-                      formato: "plano",
-                    });
-                    imprimirMaterial({
-                      titulo: plano.tema || plano.titulo,
-                      disciplina: plano.disciplina,
-                      serie: plano.serie,
-                      tipo: "plano",
-                    });
-                  }}
-                >
+                <Button variant="outline" onClick={baixarPlano}>
                   <Printer size={16} /> Baixar PDF / imprimir
                 </Button>
                 <Button
@@ -265,6 +266,7 @@ function Planos() {
             </div>
           ) : (
             <div className="space-y-6">
+              <BarraDownload titulo={plano.tema || plano.titulo} onDownload={baixarPlano} />
               <div className="doc-scroll overflow-x-auto">
                 <DocumentoPlano m={plano} professor={user?.nome} />
               </div>
