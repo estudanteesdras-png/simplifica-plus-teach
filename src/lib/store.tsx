@@ -185,6 +185,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<State>(initialState);
   const [hydrated, setHydrated] = useState(false);
   const uidRef = useRef<string | null>(null);
+  /** ids de materiais já gravados no banco (id local -> id definitivo). Evita duplicação. */
+  const persistidosRef = useRef<Map<string, string>>(new Map());
 
   const patch = useCallback((fn: (s: State) => State) => setState((s) => fn(s)), []);
 
@@ -222,6 +224,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       linhaPerfil = (data as Record<string, unknown> | null) ?? novo;
     }
     const user = perfilDaLinha(linhaPerfil, email);
+
+    persistidosRef.current = new Map(
+      (materiais.data ?? []).map((row) => [row.id as string, row.id as string]),
+    );
 
     const listaMateriais: MaterialCompleto[] = (materiais.data ?? []).map((row) => ({
       ...((row.payload ?? {}) as MaterialCompleto),
@@ -269,6 +275,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const u = session?.user ?? null;
       if (!u) {
         uidRef.current = null;
+        persistidosRef.current = new Map();
         setState((s) => ({ ...initialState, theme: s.theme }));
         setHydrated(true);
         return;
@@ -316,6 +323,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       logout: async () => {
         await supabase.auth.signOut();
         uidRef.current = null;
+        persistidosRef.current = new Map();
         setState((s) => ({ ...initialState, theme: s.theme }));
       },
 
@@ -345,6 +353,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       addMaterial: (m) => {
         const id = uid();
+        // Idempotência: um mesmo material (id local ou id do banco) nunca é
+        // gravado/exibido duas vezes, mesmo se "Salvar no acervo" for clicado
+        // depois da gravação automática ou se o efeito rodar em modo estrito.
+        const mapa = persistidosRef.current;
+        if (mapa.has(m.id) || [...mapa.values()].includes(m.id)) return;
+        mapa.set(m.id, m.id);
         patch((s) =>
           s.materiais.some((x) => x.id === m.id) ? s : { ...s, materiais: [m, ...s.materiais] },
         );
@@ -363,6 +377,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           .maybeSingle()
           .then(({ data }) => {
             if (!data?.id) return;
+            persistidosRef.current.set(m.id, data.id);
             // troca o id local pelo id definitivo do banco
             patch((s) => ({
               ...s,

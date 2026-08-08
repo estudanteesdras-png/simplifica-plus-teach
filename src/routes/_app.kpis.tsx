@@ -64,8 +64,6 @@ function PainelKpis() {
     user,
     perfis,
     materiais,
-    planos,
-    atividades,
     eventos,
     avaliacoes,
     downloads,
@@ -101,7 +99,7 @@ function PainelKpis() {
 
   const geracoes = eventos.filter((e) => e.tipo === "geracao");
   // Materiais gerados = itens realmente salvos no histórico do usuário no banco.
-  const totalMateriais = materiais.length + planos.length + atividades.length;
+  const totalMateriais = new Set(materiais.map((m) => m.id)).size;
   const totalFavoritos = new Set([...favoritos, ...salvos]).size;
   const inclusivas = geracoes.filter(
     (e) => e.adaptacao && e.adaptacao !== "Sem adaptação",
@@ -122,7 +120,7 @@ function PainelKpis() {
 
   // Evolução mensal real das gerações registradas no app.
   const porMes = new Map<string, number>();
-  for (const m of [...materiais, ...planos, ...atividades]) {
+  for (const m of materiais) {
     const d = new Date(m.criadoEm);
     if (Number.isNaN(d.getTime())) continue;
     const chave = `${d.getFullYear()}-${d.getMonth()}`;
@@ -137,9 +135,9 @@ function PainelKpis() {
 
   // Distribuição real por formato dos materiais criados.
   const contagem = {
-    "Planos de aula": planos.length + geracoes.filter((e) => e.formato === "plano").length,
-    Atividades: atividades.length + geracoes.filter((e) => e.formato === "atividade").length,
-    "Sequências didáticas": geracoes.filter((e) => e.formato === "sequencia").length,
+    "Planos de aula": materiais.filter((m) => (m.origem ?? "plano") === "plano").length,
+    Atividades: materiais.filter((m) => m.origem === "atividade").length,
+    "Sequências didáticas": materiais.filter((m) => m.origem === "sequencia").length,
   };
   const totalFormatos = Object.values(contagem).reduce((s, n) => s + n, 0);
   const uso = Object.entries(contagem)
