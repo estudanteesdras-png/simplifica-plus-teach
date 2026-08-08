@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Heart, Layers, Printer, Save, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
+import { BarraDownload } from "@/components/BarraDownload";
 import { Mascote } from "@/components/Mascote";
 import { PageHeader } from "@/components/PageHeader";
 import { Selecao } from "@/components/Selecao";
@@ -124,6 +125,24 @@ function Sequencias() {
     }
   }
 
+  function baixarSequencia() {
+    if (!sequencia) return;
+    registrarDownload(sequencia.id);
+    registrarEvento({
+      tipo: "download",
+      materialId: sequencia.id,
+      disciplina: sequencia.disciplina,
+      serie: sequencia.serie,
+      formato: "sequencia",
+    });
+    imprimirMaterial({
+      titulo: sequencia.tema || sequencia.titulo,
+      disciplina: sequencia.disciplina,
+      serie: sequencia.serie,
+      tipo: "sequencia",
+    });
+  }
+
   const favorito = sequencia ? favoritos.includes(sequencia.id) : false;
 
   return (
@@ -187,25 +206,7 @@ function Sequencias() {
 
             {sequencia && !gerando && (
               <div className="flex flex-col gap-2 border-t pt-4">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    registrarDownload(sequencia.id);
-                    registrarEvento({
-                      tipo: "download",
-                      materialId: sequencia.id,
-                      disciplina: sequencia.disciplina,
-                      serie: sequencia.serie,
-                      formato: "sequencia",
-                    });
-                    imprimirMaterial({
-                      titulo: sequencia.tema || sequencia.titulo,
-                      disciplina: sequencia.disciplina,
-                      serie: sequencia.serie,
-                      tipo: "sequencia",
-                    });
-                  }}
-                >
+                <Button variant="outline" onClick={baixarSequencia}>
                   <Printer size={16} /> Baixar PDF / imprimir sequência
                 </Button>
                 <Button
@@ -296,8 +297,15 @@ function Sequencias() {
               </p>
             </div>
           ) : (
-            <div className="doc-scroll overflow-x-auto">
-              <DocumentoSequencia s={sequencia} professor={user?.nome} />
+            <div className="space-y-6">
+              <BarraDownload
+                titulo={sequencia.tema || sequencia.titulo}
+                onDownload={baixarSequencia}
+                descricao="Sequência pronta! Baixe todas as aulas em um único PDF organizado."
+              />
+              <div className="doc-scroll overflow-x-auto">
+                <DocumentoSequencia s={sequencia} professor={user?.nome} />
+              </div>
             </div>
           )}
         </div>
