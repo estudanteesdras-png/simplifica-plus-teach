@@ -86,6 +86,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Planeje aulas, crie atividades adaptadas e acesse uma biblioteca inclusiva. Feito para professores da educação básica.",
       },
       { name: "author", content: "Simplifica+ Tech" },
+      {
+        name: "google-site-verification",
+        content: "lYXBh6faZvUyBLK90Hpj1z4d7If9IsXQLgNXgI6wYKs",
+      },
+
       { property: "og:title", content: "Simplifica+ Tech — Planejamento docente inclusivo" },
       {
         property: "og:description",
