@@ -225,6 +225,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
     const user = perfilDaLinha(linhaPerfil, email);
 
+    persistidosRef.current = new Map(
+      (materiais.data ?? []).map((row) => [row.id as string, row.id as string]),
+    );
+
     const listaMateriais: MaterialCompleto[] = (materiais.data ?? []).map((row) => ({
       ...((row.payload ?? {}) as MaterialCompleto),
       id: row.id,
@@ -271,6 +275,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const u = session?.user ?? null;
       if (!u) {
         uidRef.current = null;
+        persistidosRef.current = new Map();
         setState((s) => ({ ...initialState, theme: s.theme }));
         setHydrated(true);
         return;
@@ -318,6 +323,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       logout: async () => {
         await supabase.auth.signOut();
         uidRef.current = null;
+        persistidosRef.current = new Map();
         setState((s) => ({ ...initialState, theme: s.theme }));
       },
 
