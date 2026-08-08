@@ -345,6 +345,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       addMaterial: (m) => {
         const id = uid();
+        // Idempotência: um mesmo material (id local ou id do banco) nunca é
+        // gravado/exibido duas vezes, mesmo se "Salvar no acervo" for clicado
+        // depois da gravação automática ou se o efeito rodar em modo estrito.
+        const mapa = persistidosRef.current;
+        if (mapa.has(m.id) || [...mapa.values()].includes(m.id)) return;
+        mapa.set(m.id, m.id);
         patch((s) =>
           s.materiais.some((x) => x.id === m.id) ? s : { ...s, materiais: [m, ...s.materiais] },
         );
