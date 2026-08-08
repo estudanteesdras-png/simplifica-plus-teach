@@ -369,6 +369,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           .maybeSingle()
           .then(({ data }) => {
             if (!data?.id) return;
+            persistidosRef.current.set(m.id, data.id);
             // troca o id local pelo id definitivo do banco
             patch((s) => ({
               ...s,
