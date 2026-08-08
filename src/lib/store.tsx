@@ -185,6 +185,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<State>(initialState);
   const [hydrated, setHydrated] = useState(false);
   const uidRef = useRef<string | null>(null);
+  /** ids de materiais já gravados no banco (id local -> id definitivo). Evita duplicação. */
+  const persistidosRef = useRef<Map<string, string>>(new Map());
 
   const patch = useCallback((fn: (s: State) => State) => setState((s) => fn(s)), []);
 
