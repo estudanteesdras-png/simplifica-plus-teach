@@ -116,6 +116,25 @@ function Atividades() {
     }
   }
 
+  function baixarAtividade() {
+    if (!atividade) return;
+    registrarDownload(atividade.id);
+    registrarEvento({
+      tipo: "download",
+      materialId: atividade.id,
+      disciplina: atividade.disciplina,
+      serie: atividade.serie,
+      adaptacao,
+      formato: "atividade",
+    });
+    imprimirMaterial({
+      titulo: atividade.tema || atividade.titulo,
+      disciplina: atividade.disciplina,
+      serie: atividade.serie,
+      tipo: "atividade",
+    });
+  }
+
   const favorito = atividade ? favoritos.includes(atividade.id) : false;
 
 
@@ -266,7 +285,12 @@ function Atividades() {
               </p>
             </div>
           ) : (
-            <div className="doc-scroll overflow-x-auto">
+            <div className="space-y-6">
+              <BarraDownload
+                titulo={atividade.tema || atividade.titulo}
+                onDownload={baixarAtividade}
+              />
+              <div className="doc-scroll overflow-x-auto">
               <DocumentoAtividade m={atividade} professor={user?.nome} />
             </div>
           )}
