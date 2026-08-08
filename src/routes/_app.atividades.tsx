@@ -291,8 +291,10 @@ function Atividades() {
                 onDownload={baixarAtividade}
               />
               <div className="doc-scroll overflow-x-auto">
-              <DocumentoAtividade m={atividade} professor={user?.nome} />
+                <DocumentoAtividade m={atividade} professor={user?.nome} />
+              </div>
             </div>
+
           )}
         </div>
       </div>
