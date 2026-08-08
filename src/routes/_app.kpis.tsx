@@ -64,8 +64,6 @@ function PainelKpis() {
     user,
     perfis,
     materiais,
-    planos,
-    atividades,
     eventos,
     avaliacoes,
     downloads,
