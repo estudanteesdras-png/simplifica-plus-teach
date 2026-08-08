@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ClipboardList, Heart, Printer, Save, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 
+import { BarraDownload } from "@/components/BarraDownload";
 import { Mascote } from "@/components/Mascote";
 import { PageHeader } from "@/components/PageHeader";
 import { Selecao } from "@/components/Selecao";
@@ -179,26 +180,7 @@ function Atividades() {
 
             {atividade && (
               <div className="flex flex-col gap-2 border-t pt-4">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    registrarDownload(atividade.id);
-                    registrarEvento({
-                      tipo: "download",
-                      materialId: atividade.id,
-                      disciplina: atividade.disciplina,
-                      serie: atividade.serie,
-                      adaptacao,
-                      formato: "atividade",
-                    });
-                    imprimirMaterial({
-                      titulo: atividade.tema || atividade.titulo,
-                      disciplina: atividade.disciplina,
-                      serie: atividade.serie,
-                      tipo: "atividade",
-                    });
-                  }}
-                >
+                <Button variant="outline" onClick={baixarAtividade}>
                   <Printer size={16} /> Baixar PDF / imprimir
                 </Button>
                 <Button
