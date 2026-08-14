@@ -702,16 +702,42 @@
     margin: 20mm;
   }
 
+  /* Zera qualquer fundo escuro, sombra, gradiente ou filtro que vira
+     "mancha preta" na exportação em PDF. */
+  *,
+  *::before,
+  *::after {
+    background-image: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+    color: #14192d !important;
+    border-color: #c9ced9 !important;
+  }
+
+  /* Elementos flutuantes/fixos não podem sobrepor o documento impresso */
+  [style*="position:fixed"],
+  [style*="position: fixed"],
+  .fixed,
+  .sticky {
+    position: static !important;
+  }
+
   html,
   body {
     background: #fff !important;
     margin: 0 !important;
     padding: 0 !important;
     font-size: 11pt;
-    color: #14192d;
+    color: #14192d !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
 
   /* Esconde toda a interface do app: menus, cabeçalhos, botões e avisos */
   .nao-imprimir,
@@ -719,10 +745,16 @@
   aside,
   nav,
   button,
+  video,
+  canvas,
+  svg.decorativo,
   [role="alert"],
   [role="status"],
+  [role="dialog"],
+  [role="tooltip"],
   [data-sonner-toaster],
   [data-sonner-toast],
+  [data-radix-portal],
   [data-radix-popper-content-wrapper] {
     display: none !important;
   }
@@ -730,6 +762,18 @@
   .apenas-impressao {
     display: block !important;
   }
+
+  /* Cabeçalho da marca no topo do documento */
+  .marca-impressao {
+    display: block !important;
+    border-bottom: 1.5pt solid #14192d !important;
+    padding-bottom: 6pt;
+    margin-bottom: 14pt;
+    font-size: 12pt;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
 
   main {
     max-width: none !important;
@@ -786,11 +830,35 @@
     border-collapse: collapse;
   }
 
+  th,
+  td {
+    border: 0.5pt solid #c9ced9 !important;
+    padding: 5pt 7pt;
+    vertical-align: top;
+    text-align: left;
+  }
+
+  th {
+    font-weight: 700;
+  }
+
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
   a {
     text-decoration: none;
     color: inherit;
   }
 }
+
 
 @keyframes carregando {
   0% { transform: translateX(-100%); }

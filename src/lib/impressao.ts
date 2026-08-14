@@ -44,9 +44,23 @@ export function imprimirMaterial(dados: DadosImpressao) {
   document.title = nomeArquivo(dados);
   document.documentElement.classList.add("modo-impressao");
 
+  // Força tema claro na impressão para não gerar fundos escuros no PDF
+  const eraEscuro = document.documentElement.classList.contains("dark");
+  if (eraEscuro) document.documentElement.classList.remove("dark");
+
+  // Cabeçalho da marca no topo do documento exportado
+  const marca = document.createElement("div");
+  marca.className = "marca-impressao apenas-impressao";
+  marca.textContent = `Simplifica+ Tech — ${dados.titulo}${
+    dados.disciplina ? ` · ${dados.disciplina}` : ""
+  }${dados.serie ? ` · ${dados.serie}` : ""}`;
+  document.body.prepend(marca);
+
   const restaurar = () => {
     document.title = original;
     document.documentElement.classList.remove("modo-impressao");
+    if (eraEscuro) document.documentElement.classList.add("dark");
+    marca.remove();
   };
 
   window.addEventListener("afterprint", restaurar, { once: true });
@@ -57,3 +71,4 @@ export function imprimirMaterial(dados: DadosImpressao) {
     window.setTimeout(restaurar, 1500);
   }, 250);
 }
+
