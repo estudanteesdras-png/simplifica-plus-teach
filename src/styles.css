@@ -830,11 +830,35 @@
     border-collapse: collapse;
   }
 
+  th,
+  td {
+    border: 0.5pt solid #c9ced9 !important;
+    padding: 5pt 7pt;
+    vertical-align: top;
+    text-align: left;
+  }
+
+  th {
+    font-weight: 700;
+  }
+
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
   a {
     text-decoration: none;
     color: inherit;
   }
 }
+
 
 @keyframes carregando {
   0% { transform: translateX(-100%); }
