@@ -702,16 +702,42 @@
     margin: 20mm;
   }
 
+  /* Zera qualquer fundo escuro, sombra, gradiente ou filtro que vira
+     "mancha preta" na exportação em PDF. */
+  *,
+  *::before,
+  *::after {
+    background-image: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+    color: #14192d !important;
+    border-color: #c9ced9 !important;
+  }
+
+  /* Elementos flutuantes/fixos não podem sobrepor o documento impresso */
+  [style*="position:fixed"],
+  [style*="position: fixed"],
+  .fixed,
+  .sticky {
+    position: static !important;
+  }
+
   html,
   body {
     background: #fff !important;
     margin: 0 !important;
     padding: 0 !important;
     font-size: 11pt;
-    color: #14192d;
+    color: #14192d !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
 
   /* Esconde toda a interface do app: menus, cabeçalhos, botões e avisos */
   .nao-imprimir,
