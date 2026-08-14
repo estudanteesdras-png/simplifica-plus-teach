@@ -745,10 +745,16 @@
   aside,
   nav,
   button,
+  video,
+  canvas,
+  svg.decorativo,
   [role="alert"],
   [role="status"],
+  [role="dialog"],
+  [role="tooltip"],
   [data-sonner-toaster],
   [data-sonner-toast],
+  [data-radix-portal],
   [data-radix-popper-content-wrapper] {
     display: none !important;
   }
@@ -756,6 +762,18 @@
   .apenas-impressao {
     display: block !important;
   }
+
+  /* Cabeçalho da marca no topo do documento */
+  .marca-impressao {
+    display: block !important;
+    border-bottom: 1.5pt solid #14192d !important;
+    padding-bottom: 6pt;
+    margin-bottom: 14pt;
+    font-size: 12pt;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
 
   main {
     max-width: none !important;
