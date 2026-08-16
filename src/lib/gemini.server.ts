@@ -1,37 +1,67 @@
 import { GoogleGenAI } from "@google/genai";
 
-const MODELOS = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-flash-latest"];
+/** Modelo principal (rápido) + fallbacks usados APENAS quando há falha real. */
+const MODELO_PRINCIPAL = "gemini-3.7-flash";
+const MODELOS_FALLBACK = ["gemini-3.5-flash", "gemini-2.5-flash-lite"];
+
+/** Tempo máximo por tentativa (ms). */
+const TIMEOUT_MS = 60_000;
+
+type Opcoes = {
+  /** Orçamento de "pensamento" do modelo. Menor = resposta mais rápida. */
+  thinkingBudget?: number;
+  maxOutputTokens?: number;
+  temperature?: number;
+};
+
+function ehErroPermanente(erro: unknown): boolean {
+  const msg = erro instanceof Error ? erro.message : String(erro);
+  return /API key|permission|invalid argument|400/i.test(msg);
+}
 
 /** Chama o Gemini pedindo JSON estruturado e devolve o objeto já interpretado. */
 export async function gerarJson<T>(
   sistema: string,
   pedido: string,
   schema: unknown,
+  opcoes: Opcoes = {},
 ): Promise<T> {
   const apiKey = process.env["GEMINI_API_KEY"];
   if (!apiKey) throw new Error("A chave da IA não está configurada.");
 
   const ai = new GoogleGenAI({ apiKey });
+  const modelos = [MODELO_PRINCIPAL, ...MODELOS_FALLBACK];
   let texto = "";
   let ultimoErro: unknown;
 
-  for (const modelo of MODELOS) {
+  for (const modelo of modelos) {
+    const controlador = new AbortController();
+    const timer = setTimeout(() => controlador.abort(), TIMEOUT_MS);
     try {
       const resposta = await ai.models.generateContent({
         model: modelo,
         contents: pedido,
         config: {
+          abortSignal: controlador.signal,
           systemInstruction: sistema,
-          temperature: 0.9,
+          temperature: opcoes.temperature ?? 0.45,
+          topP: 0.9,
+          maxOutputTokens: opcoes.maxOutputTokens ?? 8192,
+          thinkingConfig: { thinkingBudget: opcoes.thinkingBudget ?? 512 },
           responseMimeType: "application/json",
           responseSchema: schema as never,
         },
       });
       texto = resposta.text ?? "";
       if (texto.trim()) break;
+      ultimoErro = new Error(`Resposta vazia do modelo ${modelo}`);
     } catch (erro) {
       ultimoErro = erro;
       console.error(`Gemini falhou no modelo ${modelo}:`, erro);
+      // Erro de configuração/credencial não melhora trocando de modelo.
+      if (ehErroPermanente(erro)) break;
+    } finally {
+      clearTimeout(timer);
     }
   }
 
