@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 
 /** Modelo principal (rápido) + fallbacks usados APENAS quando há falha real. */
 const MODELO_PRINCIPAL = "gemini-3.7-flash";
-const MODELOS_FALLBACK = ["gemini-3.5-flash", "gemini-2.5-flash-lite"];
+const MODELOS_FALLBACK = ["gemini-3-flash-preview", "gemini-3.5-flash", "gemini-flash-latest"];
 
 /** Tempo máximo por tentativa (ms). */
 const TIMEOUT_MS = 60_000;
@@ -16,8 +16,15 @@ type Opcoes = {
 
 function ehErroPermanente(erro: unknown): boolean {
   const msg = erro instanceof Error ? erro.message : String(erro);
-  return /API key|permission|invalid argument|400/i.test(msg);
+  return /API key|permission|invalid argument|"code":\s*400/i.test(msg);
 }
+
+/** 503/429 são picos temporários: vale uma nova tentativa no mesmo modelo. */
+function ehTransitorio(erro: unknown): boolean {
+  const msg = erro instanceof Error ? erro.message : String(erro);
+  return /503|429|UNAVAILABLE|RESOURCE_EXHAUSTED|high demand/i.test(msg);
+}
+
 
 /** Chama o Gemini pedindo JSON estruturado e devolve o objeto já interpretado. */
 export async function gerarJson<T>(
