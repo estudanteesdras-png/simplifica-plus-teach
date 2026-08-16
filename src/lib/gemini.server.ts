@@ -41,36 +41,48 @@ export async function gerarJson<T>(
   let texto = "";
   let ultimoErro: unknown;
 
+  let permanente = false;
+
   for (const modelo of modelos) {
-    const controlador = new AbortController();
-    const timer = setTimeout(() => controlador.abort(), TIMEOUT_MS);
-    try {
-      const resposta = await ai.models.generateContent({
-        model: modelo,
-        contents: pedido,
-        config: {
-          abortSignal: controlador.signal,
-          systemInstruction: sistema,
-          temperature: opcoes.temperature ?? 0.45,
-          topP: 0.9,
-          maxOutputTokens: opcoes.maxOutputTokens ?? 8192,
-          thinkingConfig: { thinkingBudget: opcoes.thinkingBudget ?? 512 },
-          responseMimeType: "application/json",
-          responseSchema: schema as never,
-        },
-      });
-      texto = resposta.text ?? "";
-      if (texto.trim()) break;
-      ultimoErro = new Error(`Resposta vazia do modelo ${modelo}`);
-    } catch (erro) {
-      ultimoErro = erro;
-      console.error(`Gemini falhou no modelo ${modelo}:`, erro);
-      // Erro de configuração/credencial não melhora trocando de modelo.
-      if (ehErroPermanente(erro)) break;
-    } finally {
-      clearTimeout(timer);
+    // 2 tentativas por modelo: picos de demanda (503) costumam passar rápido.
+    for (let tentativa = 0; tentativa < 2 && !texto.trim(); tentativa++) {
+      const controlador = new AbortController();
+      const timer = setTimeout(() => controlador.abort(), TIMEOUT_MS);
+      try {
+        const resposta = await ai.models.generateContent({
+          model: modelo,
+          contents: pedido,
+          config: {
+            abortSignal: controlador.signal,
+            systemInstruction: sistema,
+            temperature: opcoes.temperature ?? 0.45,
+            topP: 0.9,
+            maxOutputTokens: opcoes.maxOutputTokens ?? 8192,
+            thinkingConfig: { thinkingBudget: opcoes.thinkingBudget ?? 512 },
+            responseMimeType: "application/json",
+            responseSchema: schema as never,
+          },
+        });
+        texto = resposta.text ?? "";
+        if (texto.trim()) break;
+        ultimoErro = new Error(`Resposta vazia do modelo ${modelo}`);
+      } catch (erro) {
+        ultimoErro = erro;
+        console.error(`Gemini falhou no modelo ${modelo}:`, erro);
+        // Erro de configuração/credencial não melhora repetindo nem trocando de modelo.
+        if (ehErroPermanente(erro)) {
+          permanente = true;
+          break;
+        }
+        if (!ehTransitorio(erro)) break;
+        await new Promise((r) => setTimeout(r, 800));
+      } finally {
+        clearTimeout(timer);
+      }
     }
+    if (texto.trim() || permanente) break;
   }
+
 
   if (!texto.trim()) {
     const detalhe = ultimoErro instanceof Error ? ultimoErro.message : "";
