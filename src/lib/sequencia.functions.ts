@@ -8,6 +8,7 @@ const Entrada = z.object({
   conteudo: z.string().min(1),
   objetivo: z.string().default(""),
   adaptacao: z.string().default(""),
+  recursos: z.array(z.string()).default([]),
   quantidadeAulas: z.number().int().min(3).max(5).default(4),
 });
 
@@ -24,7 +25,14 @@ export const gerarSequencia = createServerFn({ method: "POST" })
 - Necessidades de inclusão / DUA sinalizadas: ${data.adaptacao || "turma regular, com atenção a diferentes ritmos de aprendizagem"}
 - Número de aulas da sequência: ${data.quantidadeAulas}
 
+- Recursos realmente disponíveis: ${data.recursos.length ? data.recursos.join("; ") : "apenas quadro e caderno dos alunos"}
+
+RESTRIÇÃO DE RECURSOS (obrigatória): planeje todas as aulas usando EXCLUSIVAMENTE os recursos listados. Se uma estratégia exigiria algo fora da lista, substitua por alternativa equivalente e sem custo.
+
 Produza a sequência didática completa.`;
 
-    return gerarJson<SequenciaIA>(SISTEMA_SEQUENCIA, pedido, SCHEMA_SEQUENCIA);
+    return gerarJson<SequenciaIA>(SISTEMA_SEQUENCIA, pedido, SCHEMA_SEQUENCIA, {
+      thinkingBudget: 512,
+      maxOutputTokens: 32768,
+    });
   });
