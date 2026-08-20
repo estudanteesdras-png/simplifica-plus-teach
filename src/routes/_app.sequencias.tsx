@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { BarraDownload } from "@/components/BarraDownload";
 import { Mascote } from "@/components/Mascote";
 import { PageHeader } from "@/components/PageHeader";
+import { RECURSOS_PADRAO, RecursosDisponiveis } from "@/components/RecursosDisponiveis";
 import { Selecao } from "@/components/Selecao";
 import { TelaCarregamento } from "@/components/TelaCarregamento";
 import { DocumentoSequencia } from "@/components/material/DocumentoSequencia";
@@ -67,6 +68,7 @@ function Sequencias() {
   });
   const [adaptacao, setAdaptacao] = useState(perfil.adaptacaoPreferida ?? "Sem adaptação");
   const [objetivo, setObjetivo] = useState("");
+  const [recursos, setRecursos] = useState<string[]>(RECURSOS_PADRAO);
   const [gerando, setGerando] = useState(false);
   const [sequencia, setSequencia] = useState<SequenciaDidatica | null>(null);
   const criarSequencia = useServerFn(gerarSequencia);
@@ -100,6 +102,7 @@ function Sequencias() {
           conteudo: form.tema,
           objetivo,
           adaptacao,
+          recursos,
           quantidadeAulas,
         },
       });
