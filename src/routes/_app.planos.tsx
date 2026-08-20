@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { BarraDownload } from "@/components/BarraDownload";
 import { Mascote } from "@/components/Mascote";
 import { PageHeader } from "@/components/PageHeader";
+import { RECURSOS_PADRAO, RecursosDisponiveis } from "@/components/RecursosDisponiveis";
 import { Selecao } from "@/components/Selecao";
 import { TelaCarregamento } from "@/components/TelaCarregamento";
 import { DocumentoPlano } from "@/components/material/DocumentoMaterial";
