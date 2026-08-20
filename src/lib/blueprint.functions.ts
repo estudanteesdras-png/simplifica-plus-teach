@@ -30,6 +30,9 @@ export const gerarBlueprint = createServerFn({ method: "POST" })
 - Duração da aula: ${data.duracao}
 - Metodologia preferida pelo professor: ${data.metodologia || "não informada (escolha a mais adequada e justifique)"}
 - Necessidades de inclusão / DUA sinalizadas: ${data.dua || "turma regular, com atenção a diferentes ritmos de aprendizagem"}
+- RECURSOS REALMENTE DISPONÍVEIS NESTA ESCOLA: ${data.recursos.length ? data.recursos.join("; ") : "apenas quadro e caderno dos alunos"}
+
+RESTRIÇÃO DE RECURSOS (obrigatória): planeje usando EXCLUSIVAMENTE os recursos listados acima. Não peça nada que o professor precise comprar, imprimir ou baixar se o item não estiver na lista. Se uma estratégia exigiria algo fora da lista, substitua por uma alternativa equivalente e sem custo feita com o que existe.
 
 Produza o Blueprint Pedagógico completo (FASE 1).`;
 
