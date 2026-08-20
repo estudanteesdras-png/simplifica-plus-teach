@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { BarraDownload } from "@/components/BarraDownload";
 import { Mascote } from "@/components/Mascote";
 import { PageHeader } from "@/components/PageHeader";
+import { RECURSOS_PADRAO, RecursosDisponiveis } from "@/components/RecursosDisponiveis";
 import { Selecao } from "@/components/Selecao";
 import { TelaCarregamento } from "@/components/TelaCarregamento";
 import { DocumentoPlano } from "@/components/material/DocumentoMaterial";
@@ -64,6 +65,7 @@ function Planos() {
     duracao: DURACOES[1],
   });
   const [objetivo, setObjetivo] = useState("");
+  const [recursos, setRecursos] = useState<string[]>(RECURSOS_PADRAO);
   const [gerando, setGerando] = useState(false);
   const [plano, setPlano] = useState<MaterialCompleto | null>(null);
   const criarBlueprint = useServerFn(gerarBlueprint);
@@ -102,6 +104,7 @@ function Planos() {
           duracao: form.duracao,
           metodologia: objetivo,
           dua: perfil.adaptacaoPreferida ?? "",
+          recursos,
         },
       });
       final = aplicarBlueprint(base, bp);
@@ -172,6 +175,7 @@ function Planos() {
               <Label>Duração</Label>
               <Selecao value={form.duracao} onChange={set("duracao")} options={DURACOES} />
             </div>
+            <RecursosDisponiveis value={recursos} onChange={setRecursos} />
             <div className="space-y-2">
               <Label>Objetivo específico (opcional)</Label>
               <Textarea

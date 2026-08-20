@@ -1,8 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 
 /** Modelo principal (rápido) + fallbacks usados APENAS quando há falha real. */
-const MODELO_PRINCIPAL = "gemini-3.7-flash";
-const MODELOS_FALLBACK = ["gemini-3-flash-preview", "gemini-3.5-flash", "gemini-flash-latest"];
+const MODELO_PRINCIPAL = "gemini-3-flash-preview";
+const MODELOS_FALLBACK = ["gemini-3.5-flash", "gemini-3.7-flash", "gemini-flash-latest"];
 
 /** Tempo máximo por tentativa (ms). */
 const TIMEOUT_MS = 60_000;
@@ -22,7 +22,8 @@ function ehErroPermanente(erro: unknown): boolean {
 /** 503/429 são picos temporários: vale uma nova tentativa no mesmo modelo. */
 function ehTransitorio(erro: unknown): boolean {
   const msg = erro instanceof Error ? erro.message : String(erro);
-  return /503|429|UNAVAILABLE|RESOURCE_EXHAUSTED|high demand/i.test(msg);
+  // 429 (cota) não melhora repetindo: trocar de modelo é mais rápido.
+  return /503|UNAVAILABLE|high demand|internal error|500/i.test(msg);
 }
 
 

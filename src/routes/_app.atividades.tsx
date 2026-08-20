@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { BarraDownload } from "@/components/BarraDownload";
 import { Mascote } from "@/components/Mascote";
 import { PageHeader } from "@/components/PageHeader";
+import { RECURSOS_PADRAO, RecursosDisponiveis } from "@/components/RecursosDisponiveis";
 import { Selecao } from "@/components/Selecao";
 import { TelaCarregamento } from "@/components/TelaCarregamento";
 import { DocumentoAtividade } from "@/components/material/DocumentoMaterial";
@@ -65,6 +66,7 @@ function Atividades() {
   });
   const [adaptacao, setAdaptacao] = useState(perfil.adaptacaoPreferida ?? ADAPTACOES[1]);
   const [objetivo, setObjetivo] = useState("");
+  const [recursos, setRecursos] = useState<string[]>(RECURSOS_PADRAO);
   const [gerando, setGerando] = useState(false);
   const [atividade, setAtividade] = useState<MaterialCompleto | null>(null);
   const criarQuestoes = useServerFn(gerarQuestoes);
@@ -103,6 +105,7 @@ function Atividades() {
           conteudo: form.tema,
           objetivo,
           adaptacao,
+          recursos,
         },
       });
       final = aplicarQuestoes(base, conjunto);
@@ -178,6 +181,7 @@ function Atividades() {
               <Label>Foco de adaptação</Label>
               <Selecao value={adaptacao} onChange={setAdaptacao} options={ADAPTACOES} />
             </div>
+            <RecursosDisponiveis value={recursos} onChange={setRecursos} />
             <div className="space-y-2">
               <Label>Objetivo específico (opcional)</Label>
               <Textarea

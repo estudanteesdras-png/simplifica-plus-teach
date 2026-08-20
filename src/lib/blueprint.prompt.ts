@@ -48,6 +48,7 @@ Não escreva o documento final. Produza o Blueprint Pedagógico estruturado da a
 - estrategias_dua: no mínimo 4, cobrindo representação, ação/expressão e engajamento.
 - recursos_necessarios: itens específicos e quantificados (ex.: "12 cartões impressos com frações equivalentes"), sempre com alternativa de baixo custo.
 - avaliacao: instrumento descrito passo a passo e de 3 a 5 critérios observáveis, cada um com o indicador de desempenho esperado.
+- recursos_necessarios NÃO PODE conter nenhum item fora da lista de recursos disponíveis informada no pedido; quando faltar algo, descreva a alternativa de custo zero feita com o que a escola tem.
 - nota_de_originalidade: explique em 2 frases o que torna esta aula diferente de um plano genérico da internet.`;
 
 export const SCHEMA_BLUEPRINT = {

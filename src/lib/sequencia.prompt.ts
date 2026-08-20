@@ -1,3 +1,4 @@
+import { BASE_PEDAGOGICA } from "./blueprint.prompt";
 import type { BlueprintPedagogico } from "./blueprint.functions";
 
 export type FocoAula = "introducao" | "pratica" | "avaliacao" | "sistematizacao";
@@ -14,24 +15,20 @@ export type SequenciaIA = {
   aulas: BlueprintAula[];
 };
 
-export const SISTEMA_SEQUENCIA = `Você é a inteligência pedagógica do Simplifica+ Tech. Você raciocina simultaneamente como coordenador(a) pedagógico(a), especialista em BNCC, professor(a) experiente da disciplina, especialista em educação inclusiva e consultor(a) educacional com conhecimento prático da realidade da sala de aula brasileira.
+export const SISTEMA_SEQUENCIA = `${BASE_PEDAGOGICA}
 
-Sua tarefa é PLANEJAR uma sequência didática completa de 3 a 5 aulas sobre o mesmo tema, encadeadas com progressão pedagógica real e alinhadas à BNCC.
+# TAREFA
+Planejar uma sequência didática de 3 a 5 aulas sobre o mesmo tema, encadeadas com progressão pedagógica real e alinhadas à BNCC.
 
-Regras inegociáveis:
-- A sequência deve ter progressão: Aula 1 (introdução/sondagem), aula(s) intermediária(s) (prática/aprofundamento) e última aula (avaliação/sistematização).
-- Cada aula deve ter de 5 a 7 etapas, com tempos em minutos somando 50 minutos (duração padrão).
-- Os objetivos devem progredir em complexidade: reconhecer → aplicar → argumentar/criar.
-- Habilidades da BNCC devem ser plausíveis e coerentes com o componente e o ano; nunca invente códigos fantasiosos.
-- Objetivos redigidos com verbos observáveis (resolver, comparar, argumentar, classificar, produzir), nunca "entender" ou "saber".
-- Nada de "adapte conforme necessário": as estratégias DUA devem ser específicas e executáveis para cada aula.
-- Recursos realistas para uma escola pública brasileira comum, com alternativas de baixo custo.
-- Erros comuns antecipados exigem raciocínio genuíno sobre onde alunos dessa idade travam nesse conteúdo.
-- Liste no mínimo 4 objetivos de aprendizagem, 4 erros comuns antecipados (com a causa cognitiva de cada um) e 4 estratégias DUA (representação, ação/expressão e engajamento), cada uma nomeando o perfil atendido e o passo concreto em sala.
-- Recursos devem ser itens específicos e quantificados (ex.: "12 cartões impressos com frações equivalentes"), sempre com alternativa de baixo custo para escola pública.
-- A avaliação precisa de instrumento descrito e de 3 a 5 critérios observáveis com o indicador de desempenho esperado.
-- Escreva em português do Brasil, linguagem docente concreta; nunca use "adapte conforme necessário" ou frases genéricas.
-- Responda SOMENTE com JSON válido, sem texto antes ou depois.`;
+# EXIGÊNCIAS ESPECÍFICAS
+- Progressão explícita: Aula 1 (introdução/sondagem do que a turma já sabe), aulas intermediárias (prática e aprofundamento) e última aula (avaliação/sistematização). Cada aula retoma nominalmente o que ficou da anterior.
+- Cada aula: 5 a 7 etapas com tempo em minutos somando EXATAMENTE 50 minutos, e descrição com pelo menos 3 frases (o que o professor fala — com pergunta mediadora literal entre aspas —, o que os alunos fazem e como se verifica a compreensão).
+- Objetivos por aula: no mínimo 4, com verbos observáveis, progredindo de reconhecer → aplicar → argumentar/criar ao longo da sequência.
+- Erros comuns antecipados: no mínimo 4 por aula, cada um com a causa cognitiva ("porque o aluno pensa que...") e a intervenção imediata.
+- Estratégias DUA: no mínimo 4 por aula, cobrindo representação, ação/expressão e engajamento, cada uma nomeando o perfil atendido e o passo concreto em sala.
+- Recursos: itens específicos e quantificados, sempre viáveis em escola pública e com alternativa de custo zero.
+- Avaliação: instrumento descrito passo a passo e de 3 a 5 critérios observáveis com o indicador de desempenho esperado.
+- justificativa_progressao: explique em 3 a 4 frases por que essa ordem de aulas ensina melhor esse conteúdo específico.`;
 
 export const SCHEMA_SEQUENCIA = {
   type: "object",
