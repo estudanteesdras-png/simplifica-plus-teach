@@ -22,7 +22,8 @@ function ehErroPermanente(erro: unknown): boolean {
 /** 503/429 são picos temporários: vale uma nova tentativa no mesmo modelo. */
 function ehTransitorio(erro: unknown): boolean {
   const msg = erro instanceof Error ? erro.message : String(erro);
-  return /503|429|UNAVAILABLE|RESOURCE_EXHAUSTED|high demand/i.test(msg);
+  // 429 (cota) não melhora repetindo: trocar de modelo é mais rápido.
+  return /503|UNAVAILABLE|high demand|internal error|500/i.test(msg);
 }
 
 
