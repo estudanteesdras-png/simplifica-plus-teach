@@ -15,6 +15,7 @@ const Entrada = z.object({
   metodologia: z.string().default(""),
   dua: z.string().default(""),
   duracao: z.string().default("50 minutos"),
+  recursos: z.array(z.string()).default([]),
 });
 
 export const gerarBlueprint = createServerFn({ method: "POST" })
