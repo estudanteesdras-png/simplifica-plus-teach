@@ -65,6 +65,7 @@ function Planos() {
     duracao: DURACOES[1],
   });
   const [objetivo, setObjetivo] = useState("");
+  const [recursos, setRecursos] = useState<string[]>(RECURSOS_PADRAO);
   const [gerando, setGerando] = useState(false);
   const [plano, setPlano] = useState<MaterialCompleto | null>(null);
   const criarBlueprint = useServerFn(gerarBlueprint);
