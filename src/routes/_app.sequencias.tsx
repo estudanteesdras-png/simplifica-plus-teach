@@ -188,6 +188,7 @@ function Sequencias() {
               <Label>Foco de adaptação inclusiva</Label>
               <Selecao value={adaptacao} onChange={setAdaptacao} options={["Sem adaptação", "TEA", "TDAH", "Deficiência intelectual", "Deficiência visual"]} />
             </div>
+            <RecursosDisponiveis value={recursos} onChange={setRecursos} />
             <div className="space-y-2">
               <Label>Objetivo geral (opcional)</Label>
               <Textarea
