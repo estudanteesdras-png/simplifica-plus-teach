@@ -104,6 +104,7 @@ function Planos() {
           duracao: form.duracao,
           metodologia: objetivo,
           dua: perfil.adaptacaoPreferida ?? "",
+          recursos,
         },
       });
       final = aplicarBlueprint(base, bp);
