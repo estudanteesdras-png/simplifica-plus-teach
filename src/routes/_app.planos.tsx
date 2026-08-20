@@ -172,6 +172,7 @@ function Planos() {
               <Label>Duração</Label>
               <Selecao value={form.duracao} onChange={set("duracao")} options={DURACOES} />
             </div>
+            <RecursosDisponiveis value={recursos} onChange={setRecursos} />
             <div className="space-y-2">
               <Label>Objetivo específico (opcional)</Label>
               <Textarea
