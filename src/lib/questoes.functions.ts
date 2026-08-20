@@ -31,6 +31,6 @@ Monte o conjunto de questões variadas com gabarito e resolução comentada.`;
 
     return gerarJson<ConjuntoQuestoesIA>(SISTEMA_QUESTOES, pedido, SCHEMA_QUESTOES, {
       thinkingBudget: 512,
-      maxOutputTokens: 16384,
+      maxOutputTokens: 32768,
     });
   });

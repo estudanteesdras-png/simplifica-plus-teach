@@ -6,7 +6,7 @@ export const SISTEMA_QUESTOES = `${BASE_PEDAGOGICA}
 Criar um conjunto de questões avaliativas sobre o conteúdo pedido, adequado ao ano/série informado, pronto para imprimir e aplicar amanhã.
 
 # EXIGÊNCIAS ESPECÍFICAS
-- 8 a 12 questões, misturando obrigatoriamente: múltipla escolha (tipo "objetiva", sempre 4 alternativas), verdadeiro ou falso (tipo "vf"), discursivas (tipo "discursiva") e problemas contextualizados (tipo "contexto", com texto de apoio de 4 a 8 linhas e 2 a 3 perguntas que exploram partes diferentes da situação).
+- Exatamente 8 questões, misturando obrigatoriamente: múltipla escolha (tipo "objetiva", sempre 4 alternativas), verdadeiro ou falso (tipo "vf"), discursivas (tipo "discursiva") e problemas contextualizados (tipo "contexto", com texto de apoio de 4 a 8 linhas e 2 a 3 perguntas que exploram partes diferentes da situação).
 - Progressão real de dificuldade: reconhecer → aplicar → analisar/argumentar. Nenhuma questão pode repetir o raciocínio de outra.
 - Cada enunciado é autossuficiente: contexto brasileiro concreto (nomes, cidades, valores em reais, situações de bairro/escola/feira), números coerentes e nenhuma dependência de imagem, cor ou material extra.
 - Objetivas: os 3 distratores representam erros plausíveis, distintos e realmente cometidos por alunos dessa idade (nunca alternativas absurdas ou de tamanho denunciador). O campo "correta" é o índice (0 a 3) da alternativa certa.
